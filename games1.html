@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dino Runner</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f8ff;
+      font-family: sans-serif;
+    }
+    .game-container {
+      position: relative;
+      width: 600px;
+      height: 200px;
+      border: 2px solid #333;
+      background-color: #fff;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    #dino {
+      position: absolute;
+      bottom: 10px;
+      left: 50px;
+      width: 40px;
+      height: 40px;
+      background-color: #555;
+      border-radius: 50% 50% 0 0;
+    }
+    #dino::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 10px;
+      background-color: #fff;
+      border-radius: 50%;
+      top: 5px;
+      left: 10px;
+    }
+    #dino::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #fff;
+      border-radius: 50%;
+      bottom: 5px;
+      right: 5px;
+    }
+    .tail {
+      position: absolute;
+      bottom: 15px;
+      left: -15px;
+      width: 30px;
+      height: 15px;
+      background-color: #555;
+      border-radius: 50%;
+      transform: rotate(-45deg);
+    }
+    #obstacle {
+      position: absolute;
+      bottom: 10px;
+      right: -150px;
+      width: 40px;
+      height: 60px;
+      background-color: #8B0000;
+    }
+    .ground {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 10px;
+      background-color: #555;
+    }
+    #score, #high-score {
+      position: absolute;
+      top: 10px;
+      font-size: 20px;
+    }
+    #score { left: 10px; }
+    #high-score { right: 10px; }
+    #game-over {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      color: red;
+      text-align: center;
+      display: none;
+    }
+    #restart-btn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none;
+    }
+    #restart-btn:hover { background: #555; }
+    .chat-link {
+      font-size: 18px;
+      text-decoration: none;
+      background: #333;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 8px;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+    .chat-link:hover { background: #555; }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <div id="dino"><div class="tail"></div></div>
+    <div id="obstacle"></div>
+    <div class="ground"></div>
+    <div id="score">Score: 0</div>
+    <div id="high-score">High Score: 0</div>
+    <div id="game-over">Game Over!</div>
+  </div>
+
+  <button id="restart-btn">Restart Game</button>
+
+  <a class="chat-link" href="https://chatgpt.com/share/68c8f83d-d698-800a-b0f7-cc24f1bc43f7" target="_blank">
+    View ChatGPT Game History
+  </a>
+
+  <audio id="jump-sound" src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3"></audio>
+  <audio id="gameover-sound" src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3"></audio>
+
+  <script>
+    const dino = document.getElementById('dino');
+    const obstacle = document.getElementById('obstacle');
+    const scoreDiv = document.getElementById('score');
+    const highScoreDiv = document.getElementById('high-score');
+    const gameOverDiv = document.getElementById('game-over');
+    const restartBtn = document.getElementById('restart-btn');
+    const container = document.querySelector('.game-container');
+
+    const jumpSound = document.getElementById('jump-sound');
+    const gameOverSound = document.getElementById('gameover-sound');
+
+    let isJumping, isGameOver, score, obstacleSpeed, highScore;
+    let scoreInterval, speedIncrementInterval, obstacleInterval;
+
+    function initGame() {
+      isJumping = false;
+      isGameOver = false;
+      score = 0;
+      obstacleSpeed = 5;
+      highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
+
+      dino.style.bottom = "10px";
+      obstacle.style.right = "-150px";
+      scoreDiv.textContent = "Score: 0";
+      highScoreDiv.textContent = "High Score: " + highScore;
+      gameOverDiv.style.display = "none";
+      restartBtn.style.display = "none";
+
+      startObstacle();
+      startScore();
+      startSpeedIncrement();
+    }
+
+    function jump() {
+      if (isJumping || isGameOver) return;
+      isJumping = true;
+      jumpSound.currentTime = 0;
+      jumpSound.play();
+
+      let jumpHeight = 0;
+      const maxJumpHeight = 150;
+      const jumpSpeed = 10;
+
+      const upInterval = setInterval(() => {
+        if (jumpHeight >= maxJumpHeight) {
+          clearInterval(upInterval);
+          const downInterval = setInterval(() => {
+            if (jumpHeight <= 0) {
+              clearInterval(downInterval);
+              isJumping = false;
+            } else {
+              jumpHeight -= 5;
+              dino.style.bottom = (10 + jumpHeight) + "px";
+            }
+          }, 20);
+        } else {
+          jumpHeight += jumpSpeed;
+          dino.style.bottom = (10 + jumpHeight) + "px";
+        }
+      }, 20);
+    }
+
+    function startObstacle() {
+      obstacleInterval = setInterval(() => {
+        if (isGameOver) { clearInterval(obstacleInterval); return; }
+
+        let currentRight = parseInt(obstacle.style.right);
+        obstacle.style.right = (currentRight + obstacleSpeed) + "px";
+
+        const containerWidth = container.offsetWidth;
+        if (currentRight > containerWidth + 50) {
+          obstacle.style.right = "-150px";
+        }
+
+        if (currentRight + obstacle.offsetWidth > dino.offsetLeft) {
+          checkCollision();
+        }
+      }, 20);
+    }
+
+    function checkCollision() {
+      const dinoRect = {
+        left: dino.offsetLeft,
+        right: dino.offsetLeft + dino.offsetWidth,
+        top: dino.offsetTop,
+        bottom: dino.offsetTop + dino.offsetHeight
+      };
+
+      const obstacleRect = {
+        left: container.offsetWidth - parseInt(obstacle.style.right) - obstacle.offsetWidth,
+        right: container.offsetWidth - parseInt(obstacle.style.right),
+        top: obstacle.offsetTop,
+        bottom: obstacle.offsetTop + obstacle.offsetHeight
+      };
+
+      if (
+        dinoRect.left < obstacleRect.right &&
+        dinoRect.right > obstacleRect.left &&
+        dinoRect.top < obstacleRect.bottom &&
+        dinoRect.bottom > obstacleRect.top
+      ) {
+        gameOver();
+      }
+    }
+
+    function gameOver() {
+      if (!isGameOver) {
+        isGameOver = true;
+        gameOverSound.currentTime = 0;
+        gameOverSound.play();
+
+        clearInterval(scoreInterval);
+        clearInterval(speedIncrementInterval);
+        clearInterval(obstacleInterval);
+
+        if (score > highScore) {
+          highScore = score;
+          localStorage.setItem("highScore", highScore);
+          highScoreDiv.textContent = "High Score: " + highScore;
+        }
+        gameOverDiv.style.display = "block";
+        restartBtn.style.display = "inline-block";
+      }
+    }
+
+    function startScore() {
+      scoreInterval = setInterval(() => {
+        if (isGameOver) { clearInterval(scoreInterval); return; }
+        score += 1;
+        scoreDiv.textContent = "Score: " + score;
+      }, 100);
+    }
+
+    function startSpeedIncrement() {
+      speedIncrementInterval = setInterval(() => {
+        if (isGameOver) { clearInterval(speedIncrementInterval); return; }
+        if (score % 10 === 0 && obstacleSpeed < 15) obstacleSpeed += 0.1;
+      }, 100);
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if ((event.key === " " || event.key === "ArrowUp") && !isGameOver) jump();
+    });
+
+    restartBtn.addEventListener("click", () => initGame());
+
+    initGame();
+  </script>
+</body>
+</html>
