@@ -1,0 +1,132 @@
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, #1a1a1a, #333);
+  color: #fff;
+  font-family: Arial, sans-serif;
+  touch-action: none;
+}
+canvas {
+  background: #222;
+  border: 3px solid #0f0;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+  max-width: 100%;
+  width: 400px;
+  height: 400px;
+}
+h1 {
+  margin: 10px 0;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+}
+.info {
+  margin: 10px 0;
+  font-size: clamp(0.9rem, 4vw, 1.1rem);
+}
+#errorMsg {
+  color: #ff3333;
+  font-size: clamp(0.8rem, 3.5vw, 1rem);
+  display: none;
+}
+.controls {
+  margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+button, select {
+  padding: 6px 12px;
+  margin: 4px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: clamp(0.9rem, 4vw, 1.1rem);
+  touch-action: manipulation;
+}
+button {
+  background: #0f0;
+  color: #111;
+  box-shadow: 0 0 6px rgba(0, 255, 0, 0.6);
+}
+button:hover {
+  background: #fff;
+  color: #0f0;
+}
+select {
+  background: #111;
+  color: #0f0;
+  border: 1px solid #0f0;
+}
+a {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: #0f0;
+  color: #111;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.6);
+  transition: 0.2s;
+  font-size: clamp(0.9rem, 4vw, 1.1rem);
+}
+a:hover {
+  background: #fff;
+  color: #0f0;
+}
+#muteBtn.muted {
+  background: #666;
+}
+#swipeFeedback {
+  margin: 10px 0;
+  color: #0f0;
+  font-size: clamp(1rem, 4vw, 1.2rem);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+}
+#helpModal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 10;
+}
+#helpContent {
+  background: #111;
+  padding: 20px;
+  border: 2px solid #0f0;
+  border-radius: 10px;
+  max-width: 90%;
+  font-size: clamp(0.8rem, 3.5vw, 1rem);
+}
+#closeHelp {
+  margin-top: 15px;
+  padding: 6px 12px;
+  background: #0f0;
+  color: #111;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+#closeHelp:hover {
+  background: #fff;
+  color: #0f0;
+}
+@media (max-width: 600px) {
+  canvas {
+    width: 90vw;
+    height: 90vw;
+  }
+}
