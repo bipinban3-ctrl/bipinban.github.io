@@ -2,70 +2,129 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Snake Game</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bipin Ban | Student Portfolio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background: #004080;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+    header p {
+      margin: 5px 0 15px;
+    }
+    nav a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    section {
+      padding: 40px 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h2 {
+      color: #004080;
+      margin-bottom: 15px;
+    }
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .project-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .project-card h3 {
+      margin-top: 0;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #eee;
+      margin-top: 40px;
+    }
+  </style>
 </head>
 <body>
-  <h1>🐍 Snake Game</h1>
+  <header>
+    <h1>Bipin Ban</h1>
+    <p>Student from Nepal | Dong-A University</p>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-  <div class="info">
-    Score: <span id="score">0</span> | 
-    Level: <span id="level">1</span> | 
-    High Score: <span id="highScore">0</span>
-  </div>
-  <div id="errorMsg"></div>
+  <section id="about">
+    <h2>About Me</h2>
+    <p>Hello! My name is <strong>Bipin Ban</strong> and I am a student from Nepal currently studying at <strong>
+      Dong-A University</strong>, Busan, South Korea. I am passionate about learning, exploring international culture, 
+      and growing both academically and personally. My goal is to gain valuable skills and experience that prepare me for my future career.</p>
+  </section>
 
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
-  <div id="swipeFeedback"></div>
+  <section id="skills">
+    <h2>Skills</h2>
+    <ul>
+      <li>Programming: Python, HTML, CSS, JavaScript</li>
+      <li>Tools: Git & GitHub, Excel</li>
+      <li>Soft Skills: Communication, Teamwork, Adaptability, Problem Solving</li>
+      <li>Languages: English, Nepali, Learning Korean</li>
+    </ul>
+  </section>
 
-  <div class="controls">
-    <label for="levelSelect">Choose Level:</label>
-    <select id="levelSelect">
-      <option value="1" selected>Level 1</option>
-      <option value="2">Level 2</option>
-      <option value="3">Level 3</option>
-    </select>
-    <button id="playPauseBtn">Play</button>
-    <button id="restartBtn" style="display:none;">Restart</button>
-    <button id="muteBtn">Mute</button>
-    <button id="helpBtn">?</button>
-  </div>
-
-  <a href="https://grok.com/share/c2hhcmQtNA%3D%3D_2d186aa4-3284-4fab-8b55-ea7d4e558b19" target="_blank">My AI Chat History</a>
-
-  <div id="helpModal">
-    <div id="helpContent">
-      <h2>How to Play 🐍</h2>
-      <p>
-        ▶ On desktop, use <b>Arrow Keys</b> to move.<br>
-        ▶ On mobile, <b>swipe left/right</b> to turn relative to the snake’s direction.<br>
-        ▶ Eat apples to grow & earn points.<br>
-        ▶ Choose Level before playing:<br>
-        &nbsp;&nbsp;• Level 1 = slow, +1 point<br>
-        &nbsp;&nbsp;• Level 2 = medium, +2 points<br>
-        &nbsp;&nbsp;• Level 3 = fast, +3 points<br>
-        ▶ Don’t hit the walls or yourself!<br>
-        ▶ Reach <b>100 points</b> to WIN 🎉<br><br>
-        Features: Sound effects and music (toggle with Mute), enhanced graphics, smooth snake movement.  
-        Food never spawns on snake.  
-        High score is saved in your browser.
-      </p>
-      <button id="closeHelp">Close</button>
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="project-card">
+        <h3>Portfolio Website</h3>
+        <p>This personal portfolio website hosted on GitHub Pages to showcase my skills, projects, and journey as a student abroad.</p>
+      </div>
+      <div class="project-card">
+        <h3>International Culture Learning</h3>
+        <p>Documenting my experiences of studying in South Korea and learning about international culture while building academic knowledge.</p>
+      </div>
+      <div class="project-card">
+        <h3>game </h3>
+        <p>Currently trying to create a snake game by using HTML code with the help of AI. To play click on: 
+<a href="https://bipinban3-ctrl.github.io/bipinban.github.io/snake%20game.html" target="_blank">play game</a></p>
+</p>
+      </div>
+      <div class="project-card">
+        <h3>upgrading game </h3>
+        <p>Trying to make a game more playable removing the problems and adding new features . To try this game click on  :
+play upgraded verson.</p>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <script src="script.js"></script>
-<audio id="bgMusic" src="music.mp3" loop></audio>
-<script>
-  const bgMusic = document.getElementById("bgMusic");
-  bgMusic.volume = 0.5; // set volume (0.0 - 1.0)
-  bgMusic.play().catch(() => {
-    // Auto-play is blocked, wait for user to press a key
-    document.addEventListener("keydown", () => {
-      bgMusic.play();
-    }, { once: true });
-  });
-</script>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:bipinban3@gmail.com">bipinban3@gmail.com</a></p>
+    <p>GitHub: <a href="https://github.com/bipinban3-ctrl" target="_blank">github.com/bipinban3-ctrl</a></p>
+  </section>
+
+  <footer>
+    <p>© 2025 Bipin Ban | Student Portfolio</p>
+  </footer>
 </body>
 </html>
