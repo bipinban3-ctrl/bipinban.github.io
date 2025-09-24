@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Snake Game</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>🐍 Snake Game</h1>
+
+  <div class="info">
+    Score: <span id="score">0</span> | 
+    Level: <span id="level">1</span> | 
+    High Score: <span id="highScore">0</span>
+  </div>
+  <div id="errorMsg"></div>
+
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <div id="swipeFeedback"></div>
+
+  <div class="controls">
+    <label for="levelSelect">Choose Level:</label>
+    <select id="levelSelect">
+      <option value="1" selected>Level 1</option>
+      <option value="2">Level 2</option>
+      <option value="3">Level 3</option>
+    </select>
+    <button id="playPauseBtn">Play</button>
+    <button id="restartBtn" style="display:none;">Restart</button>
+    <button id="muteBtn">Mute</button>
+    <button id="helpBtn">?</button>
+  </div>
+
+  <a href="https://grok.com/share/c2hhcmQtNA%3D%3D_2d186aa4-3284-4fab-8b55-ea7d4e558b19" target="_blank">My AI Chat History</a>
+
+  <div id="helpModal">
+    <div id="helpContent">
+      <h2>How to Play 🐍</h2>
+      <p>
+        ▶ On desktop, use <b>Arrow Keys</b> to move.<br>
+        ▶ On mobile, <b>swipe left/right</b> to turn relative to the snake’s direction.<br>
+        ▶ Eat apples to grow & earn points.<br>
+        ▶ Choose Level before playing:<br>
+        &nbsp;&nbsp;• Level 1 = slow, +1 point<br>
+        &nbsp;&nbsp;• Level 2 = medium, +2 points<br>
+        &nbsp;&nbsp;• Level 3 = fast, +3 points<br>
+        ▶ Don’t hit the walls or yourself!<br>
+        ▶ Reach <b>100 points</b> to WIN 🎉<br><br>
+        Features: Sound effects and music (toggle with Mute), enhanced graphics, smooth snake movement.  
+        Food never spawns on snake.  
+        High score is saved in your browser.
+      </p>
+      <button id="closeHelp">Close</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+<audio id="bgMusic" src="music.mp3" loop></audio>
+<script>
+  const bgMusic = document.getElementById("bgMusic");
+  bgMusic.volume = 0.5; // set volume (0.0 - 1.0)
+  bgMusic.play().catch(() => {
+    // Auto-play is blocked, wait for user to press a key
+    document.addEventListener("keydown", () => {
+      bgMusic.play();
+    }, { once: true });
+  });
+</script>
+</body>
+</html>
